@@ -1,1 +1,2 @@
-# Add necessary python packages here
+# Pip install these python packages
+matplotlib
