@@ -25,3 +25,7 @@ class SimulateWorld(object):
         while self.end_time:
             self.execute_second()
             self.end_time -= 1
+
+    def execute_second(self):
+        """Run one second of the simulation."""
+        pass
