@@ -31,5 +31,5 @@ class Bacteria(object):
     def reproduce(self):
         """Make a new child bacteria."""
         self.child_counter += 1
-        child = self(self.max_lifetime, self.child_counter)
+        child = self(self.max_lifetime,  self.global_bacteria, self.child_counter, self.reproduction_rate)
         self.global_bacteria.append(child)
