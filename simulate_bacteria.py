@@ -22,8 +22,7 @@ class Bacteria(object):
         if self.current_lifetime >= self.max_lifetime:
             self.die()
         if self.current_lifetime % self.reproduction_rate == 0:
-            child = self.reproduce()
-            self.global_bacteria.append(child)
+            self.reproduce()
 
     def die(self):
         """Kill the bacteria."""
@@ -32,4 +31,5 @@ class Bacteria(object):
     def reproduce(self):
         """Make a new child bacteria."""
         self.child_counter += 1
-        return self(self.max_lifetime, self.child_counter)
+        child = self(self.max_lifetime, self.child_counter)
+        self.global_bacteria.append(child)
