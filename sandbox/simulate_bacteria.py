@@ -20,7 +20,7 @@ class Bacteria(object):
          :param sandbox.simulation_world.World world: The world object
         """
         self.current_lifetime += 1
-        if self.current_lifetime >= self.max_lifetime:
+        if self.current_lifetime > self.max_lifetime:
             self.die(world)
         if self.current_lifetime % self.reproduction_rate == 0:
             self.reproduce(world)
@@ -40,3 +40,24 @@ class Bacteria(object):
         self.child_counter += 1
         child = self(self.max_lifetime,  self.global_bacteria, self.child_counter, self.reproduction_rate)
         world.global_bacteria.append(child)
+
+
+class NitrogenBacteria(Bacteria):
+    """Bacteria which make nitrogen."""
+
+    def __init__(self):
+        super(NitrogenBacteria, self).__init__()
+
+
+class PhosphorusBacteria(Bacteria):
+    """Bacteria which make phosphorus."""
+
+    def __init__(self):
+        super(PhosphorusBacteria, self).__init__()
+
+
+class OxygenBacteria(Bacteria):
+    """Bacteria which make oxygen."""
+
+    def __init__(self):
+        super(OxygenBacteria, self).__init__()
