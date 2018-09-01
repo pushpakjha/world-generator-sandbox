@@ -22,7 +22,7 @@ class Bacteria:
         self.x_position = x_position
         self.y_position = y_position
 
-    def execute_second(self, world, global_list):
+    def execute_tick(self, world, global_list):
         """Add to the lifetime and perform basic life checks.
 
         :param sandbox.simulation_world.World world: The world object

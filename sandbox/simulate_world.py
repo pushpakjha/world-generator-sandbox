@@ -37,17 +37,22 @@ class Land:
 
     :param int x_position: The x position of their piece of land
     :param int y_position: The y position of their piece of land
+    :param int carbon: The amount of carbon
     :param int potassium: The amount of potassium
     :param int nitrogen: The amount of nitrogen
     :param int phosphorus: The amount of phosphorus
+    :param int plant_matter: The amount of plant_matter
     :param list[Any] beings: A list of any things living in this piece of land
     """
-    def __init__(self, x_position, y_position, potassium=0, nitrogen=0, phosphorus=0, beings=None):
+    def __init__(self, x_position, y_position, carbon=0, potassium=0, nitrogen=0,
+                 phosphorus=0, plant_matter=0, beings=None):
         self.x_position = x_position
         self.y_position = y_position
+        self.carbon = carbon
         self.potassium = potassium
         self.nitrogen = nitrogen
         self.phosphorus = phosphorus
+        self.plant_matter = plant_matter
         self.beings = []
         if beings:
             self.beings.extend(beings)
@@ -57,7 +62,7 @@ class SimulateWorld:
     """Execute the simulation on a world object.
 
     :param World world: The world object
-    :param int end_time: Number of seconds to simulate world
+    :param int end_time: Number of ticks to simulate world
     :param list[sandbox.simulate_bacteria.Bacteria]|None initial_bacteria: Initial bacteria to seed
         the world with
     """
@@ -79,18 +84,18 @@ class SimulateWorld:
         clock = pygame.time.Clock()
 
         while self.end_time:
-            self.execute_second()
+            self.execute_tick()
             self.update_screen(clock, screen)
             self.end_time -= 1
             self.world.time += 1
             display_world.plot_bacteria(self.world)
 
-    def execute_second(self):
-        """Run one second of the simulation."""
+    def execute_tick(self):
+        """Run one tick of the simulation."""
         for bacteria in self.global_bacteria:
-            bacteria.execute_second(self.world, self.world.global_bacteria)
+            bacteria.execute_tick(self.world, self.world.global_bacteria)
         for plant in self.global_plants:
-            plant.execute_second(self.world, self.world.global_plants)
+            plant.execute_tick(self.world, self.world.global_plants)
 
     def update_screen(self, clock, screen):
         """Update the screen of the game."""
