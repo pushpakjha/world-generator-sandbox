@@ -9,18 +9,8 @@ class World:
     """Main world object."""
     def __init__(self):
         self.time = 0
-        self.world_map = collections.defaultdict(dict)
+        self.world_map = collections.defaultdict(list)
         self.global_bacteria = []
-
-    @property
-    def global_bacteria(self):
-        """Return the global_bacteria."""
-        return self.global_bacteria
-
-    @property
-    def world_map(self):
-        """Return the world_map."""
-        return self.world_map
 
 
 class SimulateWorld:

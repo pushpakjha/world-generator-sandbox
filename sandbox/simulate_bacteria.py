@@ -36,7 +36,10 @@ class Bacteria:
     def reproduce(self):
         """Make a new child bacteria.
         """
-        self.child_counter += 1
+        if not self.child_counter:
+            self.child_counter = 1
+        else:
+            self.child_counter += 1
         return self.__class__(self.max_lifetime, self.child_counter, self.reproduction_rate)
 
 
