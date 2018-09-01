@@ -10,9 +10,10 @@ class Bacteria:
     :param int max_lifetime: How long the bacteria should live
     :param int x_position: The x position of this bacteria
     :param int y_position: The y position of this bacteria
-    :param int reproduction_rate: Seconds needed for each reproduction cycle
+    :param int reproduction_rate: Ticks needed for each reproduction cycle
     """
     __metaclass__ = abc.ABCMeta
+    DEATH_CONCENTRATION = 15
 
     def __init__(self, max_lifetime, x_position, y_position, reproduction_rate=8):
         self.current_lifetime = 0
@@ -98,7 +99,7 @@ class NitrogenBacteria(Bacteria):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].nitrogen > 10:
+        if world.world_map[x_y_key].nitrogen > self.DEATH_CONCENTRATION:
             self._die(world)
 
 
@@ -141,7 +142,7 @@ class PhosphorusBacteria(Bacteria):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].phosphorus > 10:
+        if world.world_map[x_y_key].phosphorus > self.DEATH_CONCENTRATION:
             self._die(world)
 
 
@@ -184,5 +185,5 @@ class OxygenBacteria(Bacteria):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].oxygen > 10:
+        if world.world_map[x_y_key].oxygen > self.DEATH_CONCENTRATION:
             self._die(world)

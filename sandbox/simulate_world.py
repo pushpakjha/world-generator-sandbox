@@ -8,7 +8,6 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
-BROWN = (165, 42, 42)
 WIDTH = 20
 HEIGHT = 20
 
@@ -30,6 +29,7 @@ class World:
                 x_y_key = utils.get_x_y_key(x_val, y_val)
                 self.world_map[x_y_key] = Land(x_val, y_val)
         self.global_bacteria = []
+        self.global_plants = []
 
 
 class Land:
@@ -73,7 +73,7 @@ class SimulateWorld:
         pygame.init()  # pylint: disable=no-member
         window_size = [self.world.max_x_size * WIDTH, self.world.max_y_size * HEIGHT]
         screen = pygame.display.set_mode(window_size)
-        screen.fill(BLACK)
+        screen.fill(WHITE)
         pygame.display.set_caption('Sandbox')
         clock = pygame.time.Clock()
 
