@@ -93,9 +93,14 @@ class SimulateWorld:
     def execute_tick(self):
         """Run one tick of the simulation."""
         for bacteria in self.global_bacteria:
-            bacteria.execute_tick(self.world, self.world.global_bacteria)
+            bacteria.execute_tick(self.world)
         for plant in self.global_plants:
-            plant.execute_tick(self.world, self.world.global_plants)
+            plant.execute_tick(self.world)
+        self.spawn_plants()
+
+    def spawn_plants(self):
+        """Spawn plants if enough chemicals are present."""
+        pass
 
     def update_screen(self, clock, screen):
         """Update the screen of the game."""

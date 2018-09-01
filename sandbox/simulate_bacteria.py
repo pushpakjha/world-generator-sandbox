@@ -22,11 +22,10 @@ class Bacteria:
         self.x_position = x_position
         self.y_position = y_position
 
-    def execute_tick(self, world, global_list):
+    def execute_tick(self, world):
         """Add to the lifetime and perform basic life checks.
 
         :param sandbox.simulation_world.World world: The world object
-        :param list[Any] global_list: The global list of things we're updating
         """
         self.current_lifetime += 1
         if self.current_lifetime > self.max_lifetime:
@@ -36,8 +35,7 @@ class Bacteria:
         self.check_death(world)
 
         if self.current_lifetime % self.reproduction_rate == 0:
-            child = self.reproduce(world)
-            global_list.append(child)
+            self.reproduce(world)
 
     @abc.abstractmethod
     def _die(self, world):
@@ -93,7 +91,7 @@ class NitrogenBacteria(Bacteria):
         new_x_position, new_y_position = utils.get_new_position(
             self.x_position, self.y_position, world.max_x_size, world.max_y_size, 1)
         child = NitrogenBacteria(new_x_position, new_y_position)
-        return child
+        world.global_bacteria.append(child)
 
     def check_death(self, world):
         """Check if nitrogen bacteria should die.
@@ -137,7 +135,7 @@ class PhosphorusBacteria(Bacteria):
         new_x_position, new_y_position = utils.get_new_position(
             self.x_position, self.y_position, world.max_x_size, world.max_y_size, 1)
         child = PhosphorusBacteria(new_x_position, new_y_position)
-        return child
+        world.global_bacteria.append(child)
 
     def check_death(self, world):
         """Check if phosphorus bacteria should die.
@@ -181,7 +179,7 @@ class PotassiumBacteria(Bacteria):
         new_x_position, new_y_position = utils.get_new_position(
             self.x_position, self.y_position, world.max_x_size, world.max_y_size, 1)
         child = PotassiumBacteria(new_x_position, new_y_position)
-        return child
+        world.global_bacteria.append(child)
 
     def check_death(self, world):
         """Check if potassium bacteria should die.
