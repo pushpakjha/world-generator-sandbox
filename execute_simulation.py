@@ -1,6 +1,5 @@
 """Main file to execute the simulation of the world"""
 import sandbox
-import matplotlib
 
 
 if __name__ == "__main__":

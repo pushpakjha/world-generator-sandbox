@@ -2,6 +2,8 @@
 import collections
 import time
 
+from sandbox import display_world
+
 
 class World:
     """Main world object."""
@@ -42,6 +44,7 @@ class SimulateWorld:
             self.execute_second()
             self.end_time -= 1
             self.world.time += 1
+            display_world.plot_bacteria(self.world)
             time.sleep(0.1)
 
     def execute_second(self):
