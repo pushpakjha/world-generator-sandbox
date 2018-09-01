@@ -1,6 +1,8 @@
 """Definitions of the simulated bacteria in the world."""
 import abc
 
+from sandbox import utils
+
 
 class Bacteria:
     """Base bacteria object.
@@ -12,7 +14,7 @@ class Bacteria:
     """
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, max_lifetime, x_position, y_position, reproduction_rate=10):
+    def __init__(self, max_lifetime, x_position, y_position, reproduction_rate=8):
         self.current_lifetime = 0
         self.max_lifetime = max_lifetime
         self.reproduction_rate = reproduction_rate
@@ -25,13 +27,14 @@ class Bacteria:
         :param sandbox.simulation_world.World world: The world object
         """
         self.current_lifetime += 1
+        self.check_death(world)
         if self.current_lifetime > self.max_lifetime:
-            self.die(world)
+            self._die(world)
         if self.current_lifetime % self.reproduction_rate == 0:
             child = self.reproduce()
             world.global_bacteria.append(child)
 
-    def die(self, world):
+    def _die(self, world):
         """Kill the bacteria.
 
         :param sandbox.simulation_world.World world: The world object
@@ -40,7 +43,14 @@ class Bacteria:
 
     @abc.abstractmethod
     def reproduce(self):
-        """Override this method."""
+        """Override this method to define reproduction behavior."""
+
+    @abc.abstractmethod
+    def check_death(self, world):
+        """Override this method to define death behavior.
+
+        :param sandbox.simulate_world.World world: The world object
+        """
 
 
 class NitrogenBacteria(Bacteria):
@@ -58,10 +68,18 @@ class NitrogenBacteria(Bacteria):
         return '{}'.format(self.__class__.__name__)
 
     def reproduce(self):
-        """Make a new child bacteria.
-        """
+        """Make a new child nitrogen bacteria."""
         child = NitrogenBacteria(self.x_position, self.y_position)
         return child
+
+    def check_death(self, world):
+        """Check if nitrogen bacteria should die.
+
+        :param sandbox.simulate_world.World world: The world object
+        """
+        x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
+        if world.world_map[x_y_key].nitrogen > 5:
+            self._die(world)
 
 
 class PhosphorusBacteria(Bacteria):
@@ -79,10 +97,18 @@ class PhosphorusBacteria(Bacteria):
         return '{}'.format(self.__class__.__name__)
 
     def reproduce(self):
-        """Make a new child bacteria.
-        """
+        """Make a new child phosphorus bacteria."""
         child = PhosphorusBacteria(self.x_position, self.y_position)
         return child
+
+    def check_death(self, world):
+        """Check if phosphorus bacteria should die.
+
+        :param sandbox.simulate_world.World world: The world object
+        """
+        x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
+        if world.world_map[x_y_key].phosphorus > 5:
+            self._die(world)
 
 
 class OxygenBacteria(Bacteria):
@@ -100,7 +126,15 @@ class OxygenBacteria(Bacteria):
         return '{}'.format(self.__class__.__name__)
 
     def reproduce(self):
-        """Make a new child bacteria.
-        """
+        """Make a new child oxygen bacteria."""
         child = OxygenBacteria(self.x_position, self.y_position)
         return child
+
+    def check_death(self, world):
+        """Check if oxygen bacteria should die.
+
+        :param sandbox.simulate_world.World world: The world object
+        """
+        x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
+        if world.world_map[x_y_key].oxygen > 5:
+            self._die(world)
