@@ -1,4 +1,5 @@
 """Definitions of the simulated bacteria in the world."""
+from sandbox import utils
 
 
 class Bacteria:
@@ -25,7 +26,8 @@ class Bacteria:
         if self.current_lifetime > self.max_lifetime:
             self.die(world)
         if self.current_lifetime % self.reproduction_rate == 0:
-            child = self.reproduce()
+            child = utils.reproduce(self.__class__, self.max_lifetime, self.x_position,
+                                    self.y_position)
             world.global_bacteria.append(child)
 
     def die(self, world):
@@ -35,37 +37,47 @@ class Bacteria:
         """
         world.global_bacteria.remove(self)
 
-    def reproduce(self):
-        """Make a new child bacteria.
-        """
-        return self.__class__()
-
 
 class NitrogenBacteria(Bacteria):
-    """Bacteria which make nitrogen."""
+    """Bacteria which make nitrogen.
 
-    def __init__(self):
-        super(NitrogenBacteria, self).__init__(max_lifetime=20)
+    :param int x_position: The x position of this bacteria
+    :param int y_position: The y position of this bacteria
+    """
+
+    def __init__(self, x_position, y_position):
+        super(NitrogenBacteria, self).__init__(max_lifetime=20, x_position=x_position,
+                                               y_position=y_position)
 
     def __repr__(self):
         return '{}'.format(self.__class__.__name__)
 
 
 class PhosphorusBacteria(Bacteria):
-    """Bacteria which make phosphorus."""
+    """Bacteria which make phosphorus.
 
-    def __init__(self):
-        super(PhosphorusBacteria, self).__init__(max_lifetime=20)
+    :param int x_position: The x position of this bacteria
+    :param int y_position: The y position of this bacteria
+    """
+
+    def __init__(self, x_position, y_position):
+        super(PhosphorusBacteria, self).__init__(max_lifetime=20, x_position=x_position,
+                                                 y_position=y_position)
 
     def __repr__(self):
         return '{}'.format(self.__class__.__name__)
 
 
 class OxygenBacteria(Bacteria):
-    """Bacteria which make oxygen."""
+    """Bacteria which make oxygen.
 
-    def __init__(self):
-        super(OxygenBacteria, self).__init__(max_lifetime=20)
+    :param int x_position: The x position of this bacteria
+    :param int y_position: The y position of this bacteria
+    """
+
+    def __init__(self, x_position, y_position):
+        super(OxygenBacteria, self).__init__(max_lifetime=20, x_position=x_position,
+                                             y_position=y_position)
 
     def __repr__(self):
         return '{}'.format(self.__class__.__name__)
