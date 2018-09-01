@@ -22,10 +22,11 @@ class Bacteria:
         self.x_position = x_position
         self.y_position = y_position
 
-    def execute_second(self, world):
+    def execute_second(self, world, global_list):
         """Add to the lifetime and perform basic life checks.
 
         :param sandbox.simulation_world.World world: The world object
+        :param list[Any] global_list: The global list of things we're updating
         """
         self.current_lifetime += 1
         if self.current_lifetime > self.max_lifetime:
@@ -36,7 +37,7 @@ class Bacteria:
 
         if self.current_lifetime % self.reproduction_rate == 0:
             child = self.reproduce(world)
-            world.global_bacteria.append(child)
+            global_list.append(child)
 
     @abc.abstractmethod
     def _die(self, world):
@@ -87,6 +88,7 @@ class NitrogenBacteria(Bacteria):
         """Make a new child nitrogen bacteria.
 
         :param sandbox.simulate_world.World world: The world object
+        :rtype: sandbox.simulate_bacteria.NitrogenBacteria
         """
         new_x_position, new_y_position = utils.get_new_position(
             self.x_position, self.y_position, world.max_x_size, world.max_y_size, 1)
@@ -130,6 +132,7 @@ class PhosphorusBacteria(Bacteria):
         """Make a new child phosphorus bacteria.
 
         :param sandbox.simulate_world.World world: The world object
+        :rtype: sandbox.simulate_bacteria.PhosphorusBacteria
         """
         new_x_position, new_y_position = utils.get_new_position(
             self.x_position, self.y_position, world.max_x_size, world.max_y_size, 1)
@@ -146,44 +149,45 @@ class PhosphorusBacteria(Bacteria):
             self._die(world)
 
 
-class OxygenBacteria(Bacteria):
-    """Bacteria which make oxygen.
+class PotassiumBacteria(Bacteria):
+    """Bacteria which make potassium.
 
     :param int x_position: The x position of this bacteria
     :param int y_position: The y position of this bacteria
     """
 
     def __init__(self, x_position, y_position):
-        super(OxygenBacteria, self).__init__(max_lifetime=20, x_position=x_position,
-                                             y_position=y_position)
+        super(PotassiumBacteria, self).__init__(max_lifetime=20, x_position=x_position,
+                                                y_position=y_position)
 
     def __repr__(self):
         return '{}'.format(self.__class__.__name__)
 
     def _die(self, world):
-        """Kill the oxygen bacteria.
+        """Kill the potassium bacteria.
 
         :param sandbox.simulation_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        world.world_map[x_y_key].oxygen += 1
+        world.world_map[x_y_key].potassium += 1
         world.global_bacteria.remove(self)
 
     def reproduce(self, world):
-        """Make a new child oxygen bacteria.
+        """Make a new child potassium bacteria.
 
         :param sandbox.simulate_world.World world: The world object
+        :rtype: sandbox.simulate_bacteria.PotassiumBacteria
         """
         new_x_position, new_y_position = utils.get_new_position(
             self.x_position, self.y_position, world.max_x_size, world.max_y_size, 1)
-        child = OxygenBacteria(new_x_position, new_y_position)
+        child = PotassiumBacteria(new_x_position, new_y_position)
         return child
 
     def check_death(self, world):
-        """Check if oxygen bacteria should die.
+        """Check if potassium bacteria should die.
 
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].oxygen > self.DEATH_CONCENTRATION:
+        if world.world_map[x_y_key].potassium > self.DEATH_CONCENTRATION:
             self._die(world)

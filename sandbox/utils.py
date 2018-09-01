@@ -19,6 +19,7 @@ def get_new_position(orig_x, orig_y, max_x, max_y, distance):
     :param int max_x: The max x position
     :param int max_y: The max y position
     :param int distance: The possible distance to spread
+    :rtype: tuple
     """
     x_diff = random.randint(0, distance * 2) - distance
     y_diff = random.randint(0, distance * 2) - distance

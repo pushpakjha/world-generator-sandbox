@@ -4,10 +4,10 @@ import sandbox
 
 if __name__ == "__main__":
     world = sandbox.World(max_x_size=20, max_y_size=20)
-    initial_bacteria = [sandbox.OxygenBacteria(x_position=8, y_position=8),
+    initial_bacteria = [sandbox.PotassiumBacteria(x_position=8, y_position=8),
                         sandbox.NitrogenBacteria(x_position=10, y_position=10),
                         sandbox.PhosphorusBacteria(x_position=12, y_position=12),
-                        sandbox.OxygenBacteria(x_position=2, y_position=2),
+                        sandbox.PotassiumBacteria(x_position=2, y_position=2),
                         sandbox.NitrogenBacteria(x_position=4, y_position=4),
                         sandbox.PhosphorusBacteria(x_position=6, y_position=6)
                         ]

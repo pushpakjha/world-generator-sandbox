@@ -37,15 +37,15 @@ class Land:
 
     :param int x_position: The x position of their piece of land
     :param int y_position: The y position of their piece of land
-    :param int oxygen: The amount of oxygen
+    :param int potassium: The amount of potassium
     :param int nitrogen: The amount of nitrogen
     :param int phosphorus: The amount of phosphorus
     :param list[Any] beings: A list of any things living in this piece of land
     """
-    def __init__(self, x_position, y_position, oxygen=0, nitrogen=0, phosphorus=0, beings=None):
+    def __init__(self, x_position, y_position, potassium=0, nitrogen=0, phosphorus=0, beings=None):
         self.x_position = x_position
         self.y_position = y_position
-        self.oxygen = oxygen
+        self.potassium = potassium
         self.nitrogen = nitrogen
         self.phosphorus = phosphorus
         self.beings = []
@@ -65,6 +65,7 @@ class SimulateWorld:
         self.world = world
         self.end_time = end_time
         self.global_bacteria = world.global_bacteria
+        self.global_plants = world.global_plants
         if initial_bacteria:
             self.global_bacteria.extend(initial_bacteria)
 
@@ -87,7 +88,9 @@ class SimulateWorld:
     def execute_second(self):
         """Run one second of the simulation."""
         for bacteria in self.global_bacteria:
-            bacteria.execute_second(self.world)
+            bacteria.execute_second(self.world, self.world.global_bacteria)
+        for plant in self.global_plants:
+            plant.execute_second(self.world, self.world.global_plants)
 
     def update_screen(self, clock, screen):
         """Update the screen of the game."""
@@ -108,17 +111,18 @@ class SimulateWorld:
 
         :param int x_position: The x position of their piece of land
         :param int y_position: The y position of their piece of land
+        :rtype: tuple
         """
         scale_factor = 3
         x_y_key = utils.get_x_y_key(x_position, y_position)
-        oxygen_color = self.world.world_map[x_y_key].oxygen * scale_factor
+        potassium_color = self.world.world_map[x_y_key].potassium * scale_factor
         nitrogen_color = self.world.world_map[x_y_key].nitrogen * scale_factor
         phosphorus_color = self.world.world_map[x_y_key].phosphorus * scale_factor
-        if oxygen_color > 255:
-            oxygen_color = 255
+        if potassium_color > 255:
+            potassium_color = 255
         if nitrogen_color > 255:
             nitrogen_color = 255
         if phosphorus_color > 255:
             phosphorus_color = 255
-        color = (oxygen_color, nitrogen_color, phosphorus_color)
+        color = (potassium_color, nitrogen_color, phosphorus_color)
         return color
