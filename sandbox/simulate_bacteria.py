@@ -5,13 +5,11 @@ class Bacteria:
     """Base bacteria object.
 
     :param int max_lifetime: How long the bacteria should live
-    :param int|None child_counter: The id of the parent to this child, if this is a child else None
     :param int reproduction_rate: Seconds needed for each reproduction cycle
     """
-    def __init__(self, max_lifetime, child_counter=None, reproduction_rate=5):
+    def __init__(self, max_lifetime, reproduction_rate=5):
         self.current_lifetime = 0
         self.max_lifetime = max_lifetime
-        self.child_counter = child_counter
         self.reproduction_rate = reproduction_rate
 
     def execute_second(self, world):
@@ -36,11 +34,7 @@ class Bacteria:
     def reproduce(self):
         """Make a new child bacteria.
         """
-        if not self.child_counter:
-            self.child_counter = 1
-        else:
-            self.child_counter += 1
-        return self.__class__(self.max_lifetime, self.child_counter, self.reproduction_rate)
+        return self.__class__(max_lifetime=self.max_lifetime)
 
 
 class NitrogenBacteria(Bacteria):
@@ -49,6 +43,9 @@ class NitrogenBacteria(Bacteria):
     def __init__(self):
         super(NitrogenBacteria, self).__init__(max_lifetime=20)
 
+    def __repr__(self):
+        return '{}'.format(self.__class__.__name__)
+
 
 class PhosphorusBacteria(Bacteria):
     """Bacteria which make phosphorus."""
@@ -56,9 +53,15 @@ class PhosphorusBacteria(Bacteria):
     def __init__(self):
         super(PhosphorusBacteria, self).__init__(max_lifetime=20)
 
+    def __repr__(self):
+        return '{}'.format(self.__class__.__name__)
+
 
 class OxygenBacteria(Bacteria):
     """Bacteria which make oxygen."""
 
     def __init__(self):
         super(OxygenBacteria, self).__init__(max_lifetime=20)
+
+    def __repr__(self):
+        return '{}'.format(self.__class__.__name__)

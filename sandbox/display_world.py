@@ -7,7 +7,14 @@ def plot_bacteria(world):
 
     :param sandbox.simulate_world.World world: The world object
     """
-    print('*'*50)
+    print('*'*100)
     print(world.time)
+    bacteria_count = {}
+
     for bacteria in world.global_bacteria:
-        print(bacteria)
+        if str(bacteria) in bacteria_count:
+            bacteria_count[str(bacteria)] += 1
+        else:
+            bacteria_count[str(bacteria)] = 1
+
+    print(bacteria_count)

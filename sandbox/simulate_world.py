@@ -5,7 +5,7 @@ import time
 from sandbox import display_world
 
 
-class World:
+class World:  # pylint: disable=too-few-public-methods
     """Main world object."""
     def __init__(self):
         self.time = 0
