@@ -1,16 +1,46 @@
 """Main simulation loop file"""
-import collections
-import time
-
 from sandbox import display_world
+from sandbox import utils
 
 
-class World:  # pylint: disable=too-few-public-methods
-    """Main world object."""
-    def __init__(self):
+class World:
+    """Main world object.
+
+    :param int max_x_size: The x size of the world
+    :param int max_y_size: The y size of the world
+    """
+    def __init__(self, max_x_size, max_y_size):
+        self.max_x_size = max_x_size
+        self.max_y_size = max_y_size
+
         self.time = 0
-        self.world_map = collections.defaultdict(list)
+        self.world_map = {}
+        for x_val in range(0, self.max_x_size):
+            for y_val in range(0, self.max_x_size):
+                x_y_key = utils.get_x_y_key(x_val, y_val)
+                self.world_map[x_y_key] = Land(x_val, y_val)
         self.global_bacteria = []
+
+
+class Land:
+    """Object to represent a piece of land.
+
+    :param int x_position: The x position of their piece of land
+    :param int y_position: The y position of their piece of land
+    :param int oxygen: The amount of oxygen
+    :param int nitrogen: The amount of nitrogen
+    :param int phosphorus: The amount of phosphorus
+    :param list[Any] beings: A list of any things living in this piece of land
+    """
+    def __init__(self, x_position, y_position, oxygen=0, nitrogen=0, phosphorus=0, beings=None):
+        self.x_position = x_position
+        self.y_position = y_position
+        self.x_position = oxygen
+        self.nitrogen = nitrogen
+        self.phosphorus = phosphorus
+        self.beings = []
+        if beings:
+            self.beings.extend(beings)
 
 
 class SimulateWorld:
@@ -35,7 +65,6 @@ class SimulateWorld:
             self.end_time -= 1
             self.world.time += 1
             display_world.plot_bacteria(self.world)
-            time.sleep(0.1)
 
     def execute_second(self):
         """Run one second of the simulation."""
