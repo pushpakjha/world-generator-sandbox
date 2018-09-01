@@ -82,7 +82,7 @@ class SimulateWorld:
             self.update_screen(clock, screen)
             self.end_time -= 1
             self.world.time += 1
-            # display_world.plot_bacteria(self.world)
+            display_world.plot_bacteria(self.world)
 
     def execute_second(self):
         """Run one second of the simulation."""
@@ -109,8 +109,16 @@ class SimulateWorld:
         :param int x_position: The x position of their piece of land
         :param int y_position: The y position of their piece of land
         """
+        scale_factor = 3
         x_y_key = utils.get_x_y_key(x_position, y_position)
-        color = (self.world.world_map[x_y_key].oxygen,
-                 self.world.world_map[x_y_key].nitrogen,
-                 self.world.world_map[x_y_key].phosphorus)
+        oxygen_color = self.world.world_map[x_y_key].oxygen * scale_factor
+        nitrogen_color = self.world.world_map[x_y_key].nitrogen * scale_factor
+        phosphorus_color = self.world.world_map[x_y_key].phosphorus * scale_factor
+        if oxygen_color > 255:
+            oxygen_color = 255
+        if nitrogen_color > 255:
+            nitrogen_color = 255
+        if phosphorus_color > 255:
+            phosphorus_color = 255
+        color = (oxygen_color, nitrogen_color, phosphorus_color)
         return color

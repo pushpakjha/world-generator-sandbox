@@ -98,7 +98,7 @@ class NitrogenBacteria(Bacteria):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].nitrogen > 50:
+        if world.world_map[x_y_key].nitrogen > 10:
             self._die(world)
 
 
@@ -141,7 +141,7 @@ class PhosphorusBacteria(Bacteria):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].phosphorus > 50:
+        if world.world_map[x_y_key].phosphorus > 10:
             self._die(world)
 
 
@@ -184,5 +184,5 @@ class OxygenBacteria(Bacteria):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].oxygen > 50:
+        if world.world_map[x_y_key].oxygen > 10:
             self._die(world)
