@@ -1,6 +1,16 @@
 """Main simulation loop file"""
+import pygame
+
 from sandbox import display_world
 from sandbox import utils
+
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+BROWN = (165, 42, 42)
+WIDTH = 20
+HEIGHT = 20
 
 
 class World:
@@ -60,13 +70,47 @@ class SimulateWorld:
 
     def execute(self):
         """Main execute function, runs in a loop until time has elapsed."""
+        pygame.init()  # pylint: disable=no-member
+        window_size = [self.world.max_x_size * WIDTH, self.world.max_y_size * HEIGHT]
+        screen = pygame.display.set_mode(window_size)
+        screen.fill(BLACK)
+        pygame.display.set_caption('Sandbox')
+        clock = pygame.time.Clock()
+
         while self.end_time:
             self.execute_second()
+            self.update_screen(clock, screen)
             self.end_time -= 1
             self.world.time += 1
-            display_world.plot_bacteria(self.world)
+            # display_world.plot_bacteria(self.world)
 
     def execute_second(self):
         """Run one second of the simulation."""
         for bacteria in self.global_bacteria:
             bacteria.execute_second(self.world)
+
+    def update_screen(self, clock, screen):
+        """Update the screen of the game."""
+        for x_position in range(self.world.max_x_size):
+            for y_position in range(self.world.max_y_size):
+                color = self.get_land_color(x_position, y_position)
+                pygame.draw.rect(screen,
+                                 color,
+                                 [WIDTH * x_position,
+                                  HEIGHT * y_position,
+                                  WIDTH,
+                                  HEIGHT])
+        clock.tick(60)
+        pygame.display.flip()
+
+    def get_land_color(self, x_position, y_position):
+        """Get the color of the land for the simulation.
+
+        :param int x_position: The x position of their piece of land
+        :param int y_position: The y position of their piece of land
+        """
+        x_y_key = utils.get_x_y_key(x_position, y_position)
+        color = (self.world.world_map[x_y_key].oxygen,
+                 self.world.world_map[x_y_key].nitrogen,
+                 self.world.world_map[x_y_key].phosphorus)
+        return color

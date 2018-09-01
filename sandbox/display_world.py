@@ -1,5 +1,4 @@
 """Methods to help plot the stuff in the world."""
-import matplotlib
 
 
 def plot_bacteria(world):
