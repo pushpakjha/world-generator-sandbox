@@ -27,19 +27,22 @@ class Bacteria:
         :param sandbox.simulation_world.World world: The world object
         """
         self.current_lifetime += 1
-        self.check_death(world)
         if self.current_lifetime > self.max_lifetime:
             self._die(world)
+            return
+
+        self.check_death(world)
+
         if self.current_lifetime % self.reproduction_rate == 0:
             child = self.reproduce()
             world.global_bacteria.append(child)
 
+    @abc.abstractmethod
     def _die(self, world):
-        """Kill the bacteria.
+        """Override this method to define die behavior.
 
-        :param sandbox.simulation_world.World world: The world object
+        :param sandbox.simulate_world.World world: The world object
         """
-        world.global_bacteria.remove(self)
 
     @abc.abstractmethod
     def reproduce(self):
@@ -47,7 +50,7 @@ class Bacteria:
 
     @abc.abstractmethod
     def check_death(self, world):
-        """Override this method to define death behavior.
+        """Override this method to define check death behavior.
 
         :param sandbox.simulate_world.World world: The world object
         """
@@ -67,6 +70,15 @@ class NitrogenBacteria(Bacteria):
     def __repr__(self):
         return '{}'.format(self.__class__.__name__)
 
+    def _die(self, world):
+        """Kill the nitrogen bacteria.
+
+        :param sandbox.simulation_world.World world: The world object
+        """
+        x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
+        world.world_map[x_y_key].nitrogen += 1
+        world.global_bacteria.remove(self)
+
     def reproduce(self):
         """Make a new child nitrogen bacteria."""
         child = NitrogenBacteria(self.x_position, self.y_position)
@@ -78,7 +90,7 @@ class NitrogenBacteria(Bacteria):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].nitrogen > 5:
+        if world.world_map[x_y_key].nitrogen > 50:
             self._die(world)
 
 
@@ -96,6 +108,15 @@ class PhosphorusBacteria(Bacteria):
     def __repr__(self):
         return '{}'.format(self.__class__.__name__)
 
+    def _die(self, world):
+        """Kill the phosphorus bacteria.
+
+        :param sandbox.simulation_world.World world: The world object
+        """
+        x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
+        world.world_map[x_y_key].phosphorus += 1
+        world.global_bacteria.remove(self)
+
     def reproduce(self):
         """Make a new child phosphorus bacteria."""
         child = PhosphorusBacteria(self.x_position, self.y_position)
@@ -107,7 +128,7 @@ class PhosphorusBacteria(Bacteria):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].phosphorus > 5:
+        if world.world_map[x_y_key].phosphorus > 50:
             self._die(world)
 
 
@@ -125,6 +146,15 @@ class OxygenBacteria(Bacteria):
     def __repr__(self):
         return '{}'.format(self.__class__.__name__)
 
+    def _die(self, world):
+        """Kill the oxygen bacteria.
+
+        :param sandbox.simulation_world.World world: The world object
+        """
+        x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
+        world.world_map[x_y_key].oxygen += 1
+        world.global_bacteria.remove(self)
+
     def reproduce(self):
         """Make a new child oxygen bacteria."""
         child = OxygenBacteria(self.x_position, self.y_position)
@@ -136,5 +166,5 @@ class OxygenBacteria(Bacteria):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].oxygen > 5:
+        if world.world_map[x_y_key].oxygen > 50:
             self._die(world)

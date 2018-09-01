@@ -35,7 +35,7 @@ class Land:
     def __init__(self, x_position, y_position, oxygen=0, nitrogen=0, phosphorus=0, beings=None):
         self.x_position = x_position
         self.y_position = y_position
-        self.x_position = oxygen
+        self.oxygen = oxygen
         self.nitrogen = nitrogen
         self.phosphorus = phosphorus
         self.beings = []
