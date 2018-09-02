@@ -111,7 +111,7 @@ class PhosphorusBacteria(Bacteria):
     """
 
     def __init__(self, x_position, y_position):
-        super(PhosphorusBacteria, self).__init__(max_lifetime=2, x_position=x_position,
+        super(PhosphorusBacteria, self).__init__(max_lifetime=4, x_position=x_position,
                                                  y_position=y_position)
 
     def __repr__(self):
@@ -123,7 +123,7 @@ class PhosphorusBacteria(Bacteria):
         :param sandbox.simulation_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        world.world_map[x_y_key].phosphorus += 1
+        world.world_map[x_y_key].phosphorus += 3
         world.global_bacteria.remove(self)
 
     def reproduce(self, world):
@@ -155,7 +155,7 @@ class PotassiumBacteria(Bacteria):
     """
 
     def __init__(self, x_position, y_position):
-        super(PotassiumBacteria, self).__init__(max_lifetime=2, x_position=x_position,
+        super(PotassiumBacteria, self).__init__(max_lifetime=4, x_position=x_position,
                                                 y_position=y_position)
 
     def __repr__(self):
@@ -167,7 +167,7 @@ class PotassiumBacteria(Bacteria):
         :param sandbox.simulation_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        world.world_map[x_y_key].potassium += 1
+        world.world_map[x_y_key].potassium += 3
         world.global_bacteria.remove(self)
 
     def reproduce(self, world):

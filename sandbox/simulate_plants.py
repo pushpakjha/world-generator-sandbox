@@ -86,8 +86,8 @@ class GrassPlant(Plant):
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
         world.world_map[x_y_key].plant_matter += 1
         world.world_map[x_y_key].carbon += 5
-        world.world_map[x_y_key].nitrogen -= self.DEATH_CONCENTRATION * 4
-        world.world_map[x_y_key].phosphorus -= self.DEATH_CONCENTRATION * 2
+        world.world_map[x_y_key].nitrogen -= self.DEATH_CONCENTRATION * 3
+        world.world_map[x_y_key].phosphorus -= self.DEATH_CONCENTRATION * 1
         world.world_map[x_y_key].potassium -= self.DEATH_CONCENTRATION * 1
         self.spawn_bacteria(world)
         self.spawn_bacteria(world)

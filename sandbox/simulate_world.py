@@ -1,5 +1,7 @@
 """Main simulation loop file"""
 import random
+from multiprocessing import Pool
+
 
 import pygame
 
@@ -86,25 +88,30 @@ class SimulateWorld:
         pygame.display.set_caption('Sandbox')
         clock = pygame.time.Clock()
 
+        pool = Pool(5)
         while self.world.time < self.end_time:
-            self.execute_tick()
+            self.execute_tick(pool)
             self.update_screen(clock, screen)
             self.world.time += 1
             display_world.plot_bacteria(self.world)
 
-    def execute_tick(self):
+    def execute_tick(self, pool):
         """Run one tick of the simulation."""
+
         for plant in self.global_plants:
             # print(self.global_plants)
             plant.execute_tick(self.world)
         for bacteria in self.global_bacteria:
             bacteria.execute_tick(self.world)
         # Seed the world with plants after some time
-        if 25 < self.world.time < 35:
+        if 30 < self.world.time < 45:
             self.spawn_plants()
 
+    def plant_execute_tick(self, world):
+        pass
+
     def spawn_plants(self):
-        """Spawn plants if enough chemicals are present."""
+        """Spawn plants."""
         for _ in range(0, 30):
             rand_x_pos = random.randint(0, self.world.max_x_size - 1)
             rand_y_pos = random.randint(0, self.world.max_y_size - 1)
