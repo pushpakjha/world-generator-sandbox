@@ -43,7 +43,7 @@ class GrassPlant(simulate_bacteria.Bacteria):
         new_x_position, new_y_position = utils.get_new_position(
             self.x_position, self.y_position, world.max_x_size, world.max_y_size, 2)
         child = GrassPlant(self.max_lifetime, new_x_position, new_y_position)
-        return child
+        world.global_plants.append(child)
 
     def check_death(self, world):
         """Check if grass plant should die.

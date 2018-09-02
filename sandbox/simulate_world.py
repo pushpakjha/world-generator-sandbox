@@ -123,16 +123,19 @@ class SimulateWorld:
         :param int y_position: The y position of their piece of land
         :rtype: tuple
         """
-        scale_factor = 3
+        scale_factor = 4
         x_y_key = utils.get_x_y_key(x_position, y_position)
-        potassium_color = self.world.world_map[x_y_key].potassium * scale_factor
-        nitrogen_color = self.world.world_map[x_y_key].nitrogen * scale_factor
-        phosphorus_color = self.world.world_map[x_y_key].phosphorus * scale_factor
-        if potassium_color > 255:
-            potassium_color = 255
-        if nitrogen_color > 255:
-            nitrogen_color = 255
-        if phosphorus_color > 255:
-            phosphorus_color = 255
-        color = (potassium_color, nitrogen_color, phosphorus_color)
+        red_color = ((self.world.world_map[x_y_key].phosphorus +
+                      self.world.world_map[x_y_key].potassium +
+                      self.world.world_map[x_y_key].nitrogen) * scale_factor)
+        green_color = ((self.world.world_map[x_y_key].plant_matter * scale_factor * 2) +
+                       (self.world.world_map[x_y_key].nitrogen * scale_factor))
+        blue_color = self.world.world_map[x_y_key].potassium * scale_factor
+        if red_color > 255:
+            red_color = 255
+        if green_color > 255:
+            green_color = 255
+        if blue_color > 255:
+            blue_color = 255
+        color = (red_color, green_color, blue_color)
         return color
