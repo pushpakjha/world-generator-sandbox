@@ -9,9 +9,9 @@ from sandbox import utils
 class Plant:
     """Base plant object.
 
-    :param int max_lifetime: How long the bacteria should live
-    :param int x_position: The x position of this bacteria
-    :param int y_position: The y position of this bacteria
+    :param int max_lifetime: How long the plant should live
+    :param int x_position: The x position of this plant
+    :param int y_position: The y position of this plant
     :param int reproduction_rate: Ticks needed for each reproduction cycle
     """
     __metaclass__ = abc.ABCMeta
@@ -65,8 +65,8 @@ class Plant:
 class GrassPlant(Plant):
     """Basic grass plant.
 
-    :param int x_position: The x position of this bacteria
-    :param int y_position: The y position of this bacteria
+    :param int x_position: The x position of this grass plant
+    :param int y_position: The y position of this grass plant
     """
     DEATH_CONCENTRATION = 4
 
@@ -97,7 +97,7 @@ class GrassPlant(Plant):
         """Make a new child grass plant.
 
         :param sandbox.simulate_world.World world: The world object
-        :rtype: sandbox.simulate_bacteria.GrassPlant
+        :rtype: sandbox.simulate_plants.GrassPlant
         """
         new_x_position, new_y_position = utils.get_new_position(
             self.x_position, self.y_position, world.max_x_size, world.max_y_size, 2)
