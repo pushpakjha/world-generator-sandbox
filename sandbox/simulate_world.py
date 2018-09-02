@@ -100,7 +100,7 @@ class SimulateWorld:
         for bacteria in self.global_bacteria:
             bacteria.execute_tick(self.world)
         # Seed the world with plants after some time
-        if 25 < self.world.time < 30:
+        if 25 < self.world.time < 35:
             self.spawn_plants()
 
     def spawn_plants(self):

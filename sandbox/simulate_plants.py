@@ -110,9 +110,9 @@ class GrassPlant(Plant):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].nitrogen <= self.DEATH_CONCENTRATION * 4 or \
+        if world.world_map[x_y_key].nitrogen <= self.DEATH_CONCENTRATION * 2 or \
            world.world_map[x_y_key].phosphorus <= self.DEATH_CONCENTRATION * 1 or \
-           world.world_map[x_y_key].potassium <= self.DEATH_CONCENTRATION * 2:
+           world.world_map[x_y_key].potassium <= self.DEATH_CONCENTRATION * 1:
             self._die(world)
 
     def spawn_bacteria(self, world):
@@ -121,12 +121,12 @@ class GrassPlant(Plant):
         :param sandbox.simulate_world.World world: The world object
         """
         rand_bacteria = random.randint(0, 6)
-        if rand_bacteria in [0, 1, 2]:
+        if rand_bacteria in [0, 1]:
             world.global_bacteria.append(simulate_bacteria.NitrogenBacteria(
                 self.x_position, self.y_position))
-        elif rand_bacteria in [3, 4]:
+        elif rand_bacteria in [2, 3, 6]:
             world.global_bacteria.append(simulate_bacteria.PhosphorusBacteria(
                 self.x_position, self.y_position))
-        elif rand_bacteria in [5, 6]:
+        elif rand_bacteria in [4, 5]:
             world.global_bacteria.append(simulate_bacteria.PotassiumBacteria(
                 self.x_position, self.y_position))
