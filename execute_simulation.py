@@ -9,6 +9,6 @@ if __name__ == "__main__":
                         sandbox.NitrogenBacteria(x_position=14, y_position=15),
                         sandbox.NitrogenBacteria(x_position=2, y_position=2)
                         ]
-    simulate_world = sandbox.SimulateWorld(world=world, end_time=300,
+    simulate_world = sandbox.SimulateWorld(world=world, end_time=750,
                                            initial_bacteria=initial_bacteria)
     simulate_world.execute()
