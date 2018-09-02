@@ -94,17 +94,18 @@ class SimulateWorld:
 
     def execute_tick(self):
         """Run one tick of the simulation."""
+        for plant in self.global_plants:
+            # print(self.global_plants)
+            plant.execute_tick(self.world)
         for bacteria in self.global_bacteria:
             bacteria.execute_tick(self.world)
-        for plant in self.global_plants:
-            plant.execute_tick(self.world)
         # Seed the world with plants after some time
-        if self.end_time/5 < self.world.time < self.end_time/2:
+        if 25 < self.world.time < 30:
             self.spawn_plants()
 
     def spawn_plants(self):
         """Spawn plants if enough chemicals are present."""
-        for _ in range(0, 3):
+        for _ in range(0, 30):
             rand_x_pos = random.randint(0, self.world.max_x_size - 1)
             rand_y_pos = random.randint(0, self.world.max_y_size - 1)
             self.spawn_grass_plant(rand_x_pos, rand_y_pos)
@@ -147,9 +148,6 @@ class SimulateWorld:
         green_color = ((self.world.world_map[x_y_key].plant_matter * scale_factor * 2) +
                        (self.world.world_map[x_y_key].nitrogen * scale_factor))
         blue_color = self.world.world_map[x_y_key].potassium * scale_factor
-        print(red_color)
-        print(green_color)
-        print(blue_color)
         if red_color > 255:
             red_color = 255
         if green_color > 255:

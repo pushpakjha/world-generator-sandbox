@@ -13,9 +13,9 @@ class Bacteria:
     :param int reproduction_rate: Ticks needed for each reproduction cycle
     """
     __metaclass__ = abc.ABCMeta
-    DEATH_CONCENTRATION = 15
+    DEATH_CONCENTRATION = 10
 
-    def __init__(self, max_lifetime, x_position, y_position, reproduction_rate=8):
+    def __init__(self, max_lifetime, x_position, y_position, reproduction_rate=2):
         self.current_lifetime = 0
         self.max_lifetime = max_lifetime
         self.reproduction_rate = reproduction_rate
@@ -67,7 +67,7 @@ class NitrogenBacteria(Bacteria):
     """
 
     def __init__(self, x_position, y_position):
-        super(NitrogenBacteria, self).__init__(max_lifetime=20, x_position=x_position,
+        super(NitrogenBacteria, self).__init__(max_lifetime=4, x_position=x_position,
                                                y_position=y_position)
 
     def __repr__(self):
@@ -111,7 +111,7 @@ class PhosphorusBacteria(Bacteria):
     """
 
     def __init__(self, x_position, y_position):
-        super(PhosphorusBacteria, self).__init__(max_lifetime=20, x_position=x_position,
+        super(PhosphorusBacteria, self).__init__(max_lifetime=4, x_position=x_position,
                                                  y_position=y_position)
 
     def __repr__(self):
@@ -155,7 +155,7 @@ class PotassiumBacteria(Bacteria):
     """
 
     def __init__(self, x_position, y_position):
-        super(PotassiumBacteria, self).__init__(max_lifetime=20, x_position=x_position,
+        super(PotassiumBacteria, self).__init__(max_lifetime=4, x_position=x_position,
                                                 y_position=y_position)
 
     def __repr__(self):

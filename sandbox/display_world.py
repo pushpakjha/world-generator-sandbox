@@ -1,6 +1,7 @@
 """Methods to help plot the stuff in the world."""
 from sandbox import utils
 
+
 def plot_bacteria(world):
     """Plot the bacteria in the world.
 
@@ -17,6 +18,7 @@ def plot_bacteria(world):
             bacteria_count[str(bacteria)] = 1
 
     print(bacteria_count)
+    print('plants: {}'.format(len(world.global_plants)))
     nitrogen = 0
     phosphorus = 0
     potassium = 0
