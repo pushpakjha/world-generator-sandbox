@@ -20,10 +20,13 @@ def plot_bacteria(world):
     nitrogen = 0
     phosphorus = 0
     potassium = 0
+    plant_matter = 0
     for x_val in range(0, world.max_x_size):
         for y_val in range(0, world.max_y_size):
             x_y_key = utils.get_x_y_key(x_val, y_val)
             nitrogen += world.world_map[x_y_key].nitrogen
             phosphorus += world.world_map[x_y_key].phosphorus
             potassium += world.world_map[x_y_key].potassium
-    print('nitrogen:{} phosphorus:{} potassium:{}'.format(nitrogen, phosphorus, potassium))
+            plant_matter += world.world_map[x_y_key].plant_matter
+    print('nitrogen:{} phosphorus:{} potassium:{} plant_matter:{}'.format(
+        nitrogen, phosphorus, potassium, plant_matter))

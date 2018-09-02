@@ -12,11 +12,12 @@ class GrassPlant(simulate_bacteria.Bacteria):
     :param int x_position: The x position of this bacteria
     :param int y_position: The y position of this bacteria
     """
-    DEATH_CONCENTRATION = 3
+    DEATH_CONCENTRATION = 6
 
-    def __init__(self, max_lifetime, x_position, y_position):
-        super(GrassPlant, self).__init__(max_lifetime, x_position, y_position,
-                                         reproduction_rate=8)
+    def __init__(self, x_position, y_position):
+        super(GrassPlant, self).__init__(max_lifetime=45, x_position=x_position,
+                                         y_position=y_position,
+                                         reproduction_rate=15)
 
     def __repr__(self):
         return '{}'.format(self.__class__.__name__)
@@ -42,7 +43,7 @@ class GrassPlant(simulate_bacteria.Bacteria):
         """
         new_x_position, new_y_position = utils.get_new_position(
             self.x_position, self.y_position, world.max_x_size, world.max_y_size, 2)
-        child = GrassPlant(self.max_lifetime, new_x_position, new_y_position)
+        child = GrassPlant(new_x_position, new_y_position)
         world.global_plants.append(child)
 
     def check_death(self, world):

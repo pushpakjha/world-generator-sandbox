@@ -1,7 +1,10 @@
 """Main simulation loop file"""
+import random
+
 import pygame
 
 from sandbox import display_world
+from sandbox import simulate_plants
 from sandbox import utils
 
 BLACK = (0, 0, 0)
@@ -83,10 +86,9 @@ class SimulateWorld:
         pygame.display.set_caption('Sandbox')
         clock = pygame.time.Clock()
 
-        while self.end_time:
+        while self.world.time < self.end_time:
             self.execute_tick()
             self.update_screen(clock, screen)
-            self.end_time -= 1
             self.world.time += 1
             display_world.plot_bacteria(self.world)
 
@@ -96,11 +98,25 @@ class SimulateWorld:
             bacteria.execute_tick(self.world)
         for plant in self.global_plants:
             plant.execute_tick(self.world)
-        self.spawn_plants()
+        # Seed the world with plants after some time
+        if self.end_time/5 < self.world.time < self.end_time/2:
+            self.spawn_plants()
 
     def spawn_plants(self):
         """Spawn plants if enough chemicals are present."""
-        pass
+        for _ in range(0, 3):
+            rand_x_pos = random.randint(0, self.world.max_x_size - 1)
+            rand_y_pos = random.randint(0, self.world.max_y_size - 1)
+            self.spawn_grass_plant(rand_x_pos, rand_y_pos)
+
+    def spawn_grass_plant(self, x_position, y_position):
+        """Spawn a single grass plant.
+
+        :param int x_position: The x position of this bacteria
+        :param int y_position: The y position of this bacteria
+        """
+        plant = simulate_plants.GrassPlant(x_position, y_position)
+        self.world.global_plants.append(plant)
 
     def update_screen(self, clock, screen):
         """Update the screen of the game."""
@@ -131,11 +147,20 @@ class SimulateWorld:
         green_color = ((self.world.world_map[x_y_key].plant_matter * scale_factor * 2) +
                        (self.world.world_map[x_y_key].nitrogen * scale_factor))
         blue_color = self.world.world_map[x_y_key].potassium * scale_factor
+        print(red_color)
+        print(green_color)
+        print(blue_color)
         if red_color > 255:
             red_color = 255
         if green_color > 255:
             green_color = 255
         if blue_color > 255:
             blue_color = 255
+        if red_color < 0:
+            red_color = 0
+        if green_color < 0:
+            green_color = 0
+        if blue_color < 0:
+            blue_color = 0
         color = (red_color, green_color, blue_color)
         return color
