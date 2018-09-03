@@ -22,6 +22,7 @@ def plot_bacteria(world):
     nitrogen = 0
     phosphorus = 0
     potassium = 0
+    carbon = 0
     plant_matter = 0
     tree_matter = 0
     for x_val in range(0, world.max_x_size):
@@ -30,7 +31,8 @@ def plot_bacteria(world):
             nitrogen += world.world_map[x_y_key].nitrogen
             phosphorus += world.world_map[x_y_key].phosphorus
             potassium += world.world_map[x_y_key].potassium
+            carbon += world.world_map[x_y_key].carbon
             plant_matter += world.world_map[x_y_key].plant_matter
             tree_matter += world.world_map[x_y_key].tree_matter
-    print('nitrogen:{} phosphorus:{} potassium:{} plant_matter:{} tree_matter:{}'.format(
-        nitrogen, phosphorus, potassium, plant_matter, tree_matter))
+    print('nitrogen:{} phosphorus:{} potassium:{} carbon:{} plant_matter:{} tree_matter:{}'
+          .format(nitrogen, phosphorus, potassium, carbon, plant_matter, tree_matter))

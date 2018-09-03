@@ -112,8 +112,8 @@ class SimulateWorld:
                 rand_x_pos = random.randint(0, self.world.max_x_size - 1)
                 rand_y_pos = random.randint(0, self.world.max_y_size - 1)
                 self.spawn_grass_plant(rand_x_pos, rand_y_pos)
-        if 400 < self.world.time < 410:
-            for _ in range(0, 3):
+        if 200 < self.world.time < 215:
+            for _ in range(0, 5):
                 rand_x_pos = random.randint(0, self.world.max_x_size - 1)
                 rand_y_pos = random.randint(0, self.world.max_y_size - 1)
                 self.spawn_tree(rand_x_pos, rand_y_pos)
@@ -135,10 +135,10 @@ class SimulateWorld:
         :param int x_position: The x position of this tree
         :param int y_position: The y position of this tree
         """
-        plant = simulate_plants.TreePlant(x_position, y_position)
+        tree = simulate_plants.TreePlant(x_position, y_position)
         x_y_key = utils.get_x_y_key(x_position, y_position)
-        self.world.global_plants.append(plant)
-        self.world.world_map[x_y_key].beings['tree'].append(plant)
+        self.world.global_plants.append(tree)
+        self.world.world_map[x_y_key].beings['tree'].append(tree)
 
     def update_screen(self, clock, screen):
         """Update the screen of the game."""

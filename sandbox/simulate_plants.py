@@ -92,7 +92,11 @@ class GrassPlant(Plant):
         self.spawn_bacteria(world)
         self.spawn_bacteria(world)
         world.global_plants.remove(self)
-        world.world_map[x_y_key].beings['grass'].remove(self)
+        # TODO: Figure out why this is broken
+        try:
+            world.world_map[x_y_key].beings['grass'].remove(self)
+        except Exception as err:  # pylint: disable=broad-except
+            print('Tried to remove grass plant twice: {}:{}'.format(err, self))
 
     def reproduce(self, world):
         """Make a new child grass plant.
@@ -128,7 +132,7 @@ class GrassPlant(Plant):
         :param sandbox.simulate_world.World world: The world object
         """
         rand_bacteria = random.randint(0, 7)
-        if rand_bacteria in [0, 1, 6, 7]:
+        if rand_bacteria in [0, 1, 6]:
             world.global_bacteria.append(simulate_bacteria.NitrogenBacteria(
                 self.x_position, self.y_position))
         elif rand_bacteria in [2, 3]:
@@ -145,12 +149,12 @@ class TreePlant(Plant):
     :param int x_position: The x position of this tree
     :param int y_position: The y position of this tree
     """
-    DEATH_CONCENTRATION = 6
+    DEATH_CONCENTRATION = 8
 
     def __init__(self, x_position, y_position):
-        super(TreePlant, self).__init__(max_lifetime=200, x_position=x_position,
+        super(TreePlant, self).__init__(max_lifetime=160, x_position=x_position,
                                         y_position=y_position,
-                                        reproduction_rate=50)
+                                        reproduction_rate=20)
 
     def __repr__(self):
         return '{}'.format(self.__class__.__name__)
@@ -162,8 +166,8 @@ class TreePlant(Plant):
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
         world.world_map[x_y_key].tree_matter += 10
-        # world.world_map[x_y_key].plant_matter -= self.DEATH_CONCENTRATION * 3
-        world.world_map[x_y_key].carbon -= self.DEATH_CONCENTRATION * 5
+        world.world_map[x_y_key].plant_matter -= self.DEATH_CONCENTRATION * 5
+        world.world_map[x_y_key].carbon -= self.DEATH_CONCENTRATION * 4
         world.world_map[x_y_key].nitrogen -= self.DEATH_CONCENTRATION * 1
         world.world_map[x_y_key].phosphorus -= self.DEATH_CONCENTRATION * 1
         world.world_map[x_y_key].potassium -= self.DEATH_CONCENTRATION * 1
@@ -189,10 +193,10 @@ class TreePlant(Plant):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        if world.world_map[x_y_key].nitrogen <= self.DEATH_CONCENTRATION * 1 or \
+        if world.world_map[x_y_key].carbon <= self.DEATH_CONCENTRATION * 4 or \
+           world.world_map[x_y_key].nitrogen <= self.DEATH_CONCENTRATION * 1 or \
            world.world_map[x_y_key].phosphorus <= self.DEATH_CONCENTRATION * 1 or \
-           world.world_map[x_y_key].potassium <= self.DEATH_CONCENTRATION * 1 or \
-           world.world_map[x_y_key].carbon <= self.DEATH_CONCENTRATION * 5:
+           world.world_map[x_y_key].potassium <= self.DEATH_CONCENTRATION * 1:
             self._die(world)
             return
         if len(world.world_map[x_y_key].beings['tree']) > 4:
