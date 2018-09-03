@@ -23,6 +23,8 @@ def get_new_position(orig_x, orig_y, max_x, max_y, distance):
     """
     x_diff = random.randint(0, distance * 2) - distance
     y_diff = random.randint(0, distance * 2) - distance
+    #y_diff = distance
+    #x_diff = -1*distance
     new_x = orig_x + x_diff
     new_y = orig_y + y_diff
     if new_x < 0:

@@ -1,7 +1,6 @@
 """Main simulation loop file"""
+import collections
 import random
-from multiprocessing import Pool
-
 
 import pygame
 
@@ -46,11 +45,12 @@ class Land:
     :param int potassium: The amount of potassium
     :param int nitrogen: The amount of nitrogen
     :param int phosphorus: The amount of phosphorus
-    :param int plant_matter: The amount of plant_matter
+    :param int plant_matter: The amount of plant matter
+    :param int tree_matter: The amount of tree matter
     :param list[Any] beings: A list of any things living in this piece of land
     """
     def __init__(self, x_position, y_position, carbon=0, potassium=0, nitrogen=0,
-                 phosphorus=0, plant_matter=0, beings=None):
+                 phosphorus=0, plant_matter=0, tree_matter=0, beings=None):
         self.x_position = x_position
         self.y_position = y_position
         self.carbon = carbon
@@ -58,9 +58,10 @@ class Land:
         self.nitrogen = nitrogen
         self.phosphorus = phosphorus
         self.plant_matter = plant_matter
-        self.beings = []
+        self.tree_matter = tree_matter
+        self.beings = collections.defaultdict(list)
         if beings:
-            self.beings.extend(beings)
+            self.beings.update(beings)
 
 
 class SimulateWorld:
@@ -88,43 +89,56 @@ class SimulateWorld:
         pygame.display.set_caption('Sandbox')
         clock = pygame.time.Clock()
 
-        pool = Pool(5)
         while self.world.time < self.end_time:
-            self.execute_tick(pool)
+            self.execute_tick()
             self.update_screen(clock, screen)
             self.world.time += 1
             display_world.plot_bacteria(self.world)
 
-    def execute_tick(self, pool):
+    def execute_tick(self):
         """Run one tick of the simulation."""
 
         for plant in self.global_plants:
-            # print(self.global_plants)
             plant.execute_tick(self.world)
         for bacteria in self.global_bacteria:
             bacteria.execute_tick(self.world)
         # Seed the world with plants after some time
-        if 30 < self.world.time < 45:
-            self.spawn_plants()
-
-    def plant_execute_tick(self, world):
-        pass
+        self.spawn_plants()
 
     def spawn_plants(self):
         """Spawn plants."""
-        for _ in range(0, 30):
-            rand_x_pos = random.randint(0, self.world.max_x_size - 1)
-            rand_y_pos = random.randint(0, self.world.max_y_size - 1)
-            self.spawn_grass_plant(rand_x_pos, rand_y_pos)
+        if 100 < self.world.time < 125:
+            for _ in range(0, 5):
+                rand_x_pos = random.randint(0, self.world.max_x_size - 1)
+                rand_y_pos = random.randint(0, self.world.max_y_size - 1)
+                self.spawn_grass_plant(rand_x_pos, rand_y_pos)
+        if 400 < self.world.time < 410:
+            for _ in range(0, 3):
+                rand_x_pos = random.randint(0, self.world.max_x_size - 1)
+                rand_y_pos = random.randint(0, self.world.max_y_size - 1)
+                self.spawn_tree(rand_x_pos, rand_y_pos)
 
     def spawn_grass_plant(self, x_position, y_position):
         """Spawn a single grass plant.
 
-        :param int x_position: The x position of this bacteria
-        :param int y_position: The y position of this bacteria
+        :param int x_position: The x position of this grass plant
+        :param int y_position: The y position of this grass plant
         """
         plant = simulate_plants.GrassPlant(x_position, y_position)
+        x_y_key = utils.get_x_y_key(x_position, y_position)
         self.world.global_plants.append(plant)
+        self.world.world_map[x_y_key].beings['grass'].append(plant)
+
+    def spawn_tree(self, x_position, y_position):
+        """Spawn a single tree.
+
+        :param int x_position: The x position of this tree
+        :param int y_position: The y position of this tree
+        """
+        plant = simulate_plants.TreePlant(x_position, y_position)
+        x_y_key = utils.get_x_y_key(x_position, y_position)
+        self.world.global_plants.append(plant)
+        self.world.world_map[x_y_key].beings['tree'].append(plant)
 
     def update_screen(self, clock, screen):
         """Update the screen of the game."""
@@ -147,14 +161,20 @@ class SimulateWorld:
         :param int y_position: The y position of their piece of land
         :rtype: tuple
         """
-        scale_factor = 4
+        scale_factor = 1
         x_y_key = utils.get_x_y_key(x_position, y_position)
         red_color = ((self.world.world_map[x_y_key].phosphorus +
                       self.world.world_map[x_y_key].potassium +
                       self.world.world_map[x_y_key].nitrogen) * scale_factor)
-        green_color = ((self.world.world_map[x_y_key].plant_matter * scale_factor * 2) +
-                       (self.world.world_map[x_y_key].nitrogen * scale_factor))
+        red_color -= len(self.world.world_map[x_y_key].beings['grass']) * 400
+        green_color = self.world.world_map[x_y_key].nitrogen * scale_factor
+        green_color += len(self.world.world_map[x_y_key].beings['grass']) * 45
         blue_color = self.world.world_map[x_y_key].potassium * scale_factor
+        blue_color -= len(self.world.world_map[x_y_key].beings['grass']) * 60
+        if len(self.world.world_map[x_y_key].beings['tree']) >= 2:
+            red_color = 139
+            green_color = 69
+            blue_color = 19
         if red_color > 255:
             red_color = 255
         if green_color > 255:
