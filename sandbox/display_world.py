@@ -18,13 +18,15 @@ def plot_bacteria(world):
             bacteria_count[str(bacteria)] = 1
 
     print(bacteria_count)
-    print('plants: {}'.format(len(world.global_plants)))
+
     nitrogen = 0
     phosphorus = 0
     potassium = 0
     carbon = 0
     plant_matter = 0
     tree_matter = 0
+    grass = 0
+    trees = 0
     for x_val in range(0, world.max_x_size):
         for y_val in range(0, world.max_y_size):
             x_y_key = utils.get_x_y_key(x_val, y_val)
@@ -34,5 +36,8 @@ def plot_bacteria(world):
             carbon += world.world_map[x_y_key].carbon
             plant_matter += world.world_map[x_y_key].plant_matter
             tree_matter += world.world_map[x_y_key].tree_matter
+            grass += len(world.world_map[x_y_key].beings['grass'])
+            trees += len(world.world_map[x_y_key].beings['tree'])
     print('nitrogen:{} phosphorus:{} potassium:{} carbon:{} plant_matter:{} tree_matter:{}'
           .format(nitrogen, phosphorus, potassium, carbon, plant_matter, tree_matter))
+    print('grass: {} trees:{}'.format(grass, trees))

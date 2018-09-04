@@ -84,19 +84,12 @@ class GrassPlant(Plant):
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
         world.world_map[x_y_key].plant_matter += 1
-        world.world_map[x_y_key].carbon += 2
-        world.world_map[x_y_key].nitrogen -= self.DEATH_CONCENTRATION * 3
-        world.world_map[x_y_key].phosphorus -= self.DEATH_CONCENTRATION * 1
-        world.world_map[x_y_key].potassium -= self.DEATH_CONCENTRATION * 1
+        world.world_map[x_y_key].carbon += 1
         self.spawn_bacteria(world)
         self.spawn_bacteria(world)
         self.spawn_bacteria(world)
         world.global_plants.remove(self)
-        # TODO: Figure out why this is broken
-        try:
-            world.world_map[x_y_key].beings['grass'].remove(self)
-        except Exception as err:  # pylint: disable=broad-except
-            print('Tried to remove grass plant twice: {}:{}'.format(err, self))
+        world.world_map[x_y_key].beings['grass'].remove(self)
 
     def reproduce(self, world):
         """Make a new child grass plant.
@@ -117,6 +110,9 @@ class GrassPlant(Plant):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
+        world.world_map[x_y_key].nitrogen -= self.DEATH_CONCENTRATION * 3/self.max_lifetime
+        world.world_map[x_y_key].phosphorus -= self.DEATH_CONCENTRATION * 1/self.max_lifetime
+        world.world_map[x_y_key].potassium -= self.DEATH_CONCENTRATION * 1/self.max_lifetime
         if world.world_map[x_y_key].nitrogen <= self.DEATH_CONCENTRATION * 3 or \
            world.world_map[x_y_key].phosphorus <= self.DEATH_CONCENTRATION * 1 or \
            world.world_map[x_y_key].potassium <= self.DEATH_CONCENTRATION * 1:
@@ -149,10 +145,10 @@ class TreePlant(Plant):
     :param int x_position: The x position of this tree
     :param int y_position: The y position of this tree
     """
-    DEATH_CONCENTRATION = 8
+    DEATH_CONCENTRATION = 6
 
     def __init__(self, x_position, y_position):
-        super(TreePlant, self).__init__(max_lifetime=160, x_position=x_position,
+        super(TreePlant, self).__init__(max_lifetime=180, x_position=x_position,
                                         y_position=y_position,
                                         reproduction_rate=20)
 
@@ -166,11 +162,6 @@ class TreePlant(Plant):
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
         world.world_map[x_y_key].tree_matter += 10
-        world.world_map[x_y_key].plant_matter -= self.DEATH_CONCENTRATION * 5
-        world.world_map[x_y_key].carbon -= self.DEATH_CONCENTRATION * 4
-        world.world_map[x_y_key].nitrogen -= self.DEATH_CONCENTRATION * 1
-        world.world_map[x_y_key].phosphorus -= self.DEATH_CONCENTRATION * 1
-        world.world_map[x_y_key].potassium -= self.DEATH_CONCENTRATION * 1
         world.global_plants.remove(self)
         world.world_map[x_y_key].beings['tree'].remove(self)
 
@@ -182,7 +173,7 @@ class TreePlant(Plant):
         """
         new_x_position, new_y_position = utils.get_new_position(
             self.x_position, self.y_position, world.max_x_size, world.max_y_size, 1)
-        child = GrassPlant(new_x_position, new_y_position)
+        child = TreePlant(new_x_position, new_y_position)
         x_y_key = utils.get_x_y_key(new_x_position, new_y_position)
         world.global_plants.append(child)
         world.world_map[x_y_key].beings['tree'].append(child)
@@ -193,12 +184,17 @@ class TreePlant(Plant):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
+        world.world_map[x_y_key].plant_matter -= self.DEATH_CONCENTRATION * 5/self.max_lifetime
+        world.world_map[x_y_key].carbon -= self.DEATH_CONCENTRATION * 4/self.max_lifetime
+        world.world_map[x_y_key].nitrogen -= self.DEATH_CONCENTRATION * 1/self.max_lifetime
+        world.world_map[x_y_key].phosphorus -= self.DEATH_CONCENTRATION * 1/self.max_lifetime
+        world.world_map[x_y_key].potassium -= self.DEATH_CONCENTRATION * 1/self.max_lifetime
         if world.world_map[x_y_key].carbon <= self.DEATH_CONCENTRATION * 4 or \
            world.world_map[x_y_key].nitrogen <= self.DEATH_CONCENTRATION * 1 or \
            world.world_map[x_y_key].phosphorus <= self.DEATH_CONCENTRATION * 1 or \
            world.world_map[x_y_key].potassium <= self.DEATH_CONCENTRATION * 1:
             self._die(world)
             return
-        if len(world.world_map[x_y_key].beings['tree']) > 4:
+        if len(world.world_map[x_y_key].beings['tree']) > 2:
             self._die(world)
             return

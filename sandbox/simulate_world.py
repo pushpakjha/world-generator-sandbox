@@ -41,10 +41,10 @@ class Land:
 
     :param int x_position: The x position of their piece of land
     :param int y_position: The y position of their piece of land
-    :param int carbon: The amount of carbon
-    :param int potassium: The amount of potassium
-    :param int nitrogen: The amount of nitrogen
-    :param int phosphorus: The amount of phosphorus
+    :param float carbon: The amount of carbon
+    :param float potassium: The amount of potassium
+    :param float nitrogen: The amount of nitrogen
+    :param float phosphorus: The amount of phosphorus
     :param int plant_matter: The amount of plant matter
     :param int tree_matter: The amount of tree matter
     :param list[Any] beings: A list of any things living in this piece of land
@@ -53,10 +53,10 @@ class Land:
                  phosphorus=0, plant_matter=0, tree_matter=0, beings=None):
         self.x_position = x_position
         self.y_position = y_position
-        self.carbon = carbon
-        self.potassium = potassium
-        self.nitrogen = nitrogen
-        self.phosphorus = phosphorus
+        self.carbon = float(carbon)
+        self.potassium = float(potassium)
+        self.nitrogen = float(nitrogen)
+        self.phosphorus = float(phosphorus)
         self.plant_matter = plant_matter
         self.tree_matter = tree_matter
         self.beings = collections.defaultdict(list)
@@ -175,6 +175,21 @@ class SimulateWorld:
             red_color = 139
             green_color = 69
             blue_color = 19
+
+        return self._get_safe_rgb_color(red_color, green_color, blue_color)
+
+    @staticmethod
+    def _get_safe_rgb_color(red_color, green_color, blue_color):
+        """Get the color of the land for the simulation.
+
+        :param float red_color: The red color
+        :param float green_color: The green color
+        :param float blue_color: The blue color
+        :rtype: tuple
+        """
+        red_color = int(red_color)
+        green_color = int(green_color)
+        blue_color = int(blue_color)
         if red_color > 255:
             red_color = 255
         if green_color > 255:
