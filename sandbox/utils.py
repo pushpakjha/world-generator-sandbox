@@ -21,12 +21,14 @@ def get_new_position(orig_x, orig_y, max_x, max_y, distance):
     :param int distance: The possible distance to spread
     :rtype: tuple
     """
-    x_diff = 0
-    while not x_diff:
-        x_diff = random.randint(0, distance * 2) - distance
-    y_diff = 0
-    while not y_diff:
-        y_diff = random.randint(0, distance * 2) - distance
+    # x_diff = 0
+    # while not x_diff:
+    #     x_diff = random.randint(0, distance * 2) - distance
+    # y_diff = 0
+    # while not y_diff:
+    #     y_diff = random.randint(0, distance * 2) - distance
+    x_diff = random.randint(0, distance * 2) - distance
+    y_diff = random.randint(0, distance * 2) - distance
     new_x = orig_x + x_diff
     new_y = orig_y + y_diff
     if new_x < 0:

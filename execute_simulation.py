@@ -7,7 +7,8 @@ if __name__ == "__main__":
     initial_bacteria = [sandbox.PotassiumBacteria(x_position=4, y_position=4),
                         sandbox.PhosphorusBacteria(x_position=9, y_position=9),
                         sandbox.NitrogenBacteria(x_position=14, y_position=15),
-                        sandbox.NitrogenBacteria(x_position=2, y_position=2)
+                        sandbox.NitrogenBacteria(x_position=2, y_position=2),
+                        sandbox.NitrogenBacteria(x_position=8, y_position=7)
                         ]
     simulate_world = sandbox.SimulateWorld(world=world, end_time=1000,
                                            initial_bacteria=initial_bacteria)

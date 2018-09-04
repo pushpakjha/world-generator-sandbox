@@ -72,7 +72,7 @@ class GrassPlant(Plant):
     def __init__(self, x_position, y_position):
         super(GrassPlant, self).__init__(max_lifetime=24, x_position=x_position,
                                          y_position=y_position,
-                                         reproduction_rate=8)
+                                         reproduction_rate=6)
 
     def __repr__(self):
         return '{}'.format(self.__class__.__name__)
@@ -110,15 +110,15 @@ class GrassPlant(Plant):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        world.world_map[x_y_key].nitrogen -= self.DEATH_CONCENTRATION * 3/self.max_lifetime
+        world.world_map[x_y_key].nitrogen -= self.DEATH_CONCENTRATION * 2/self.max_lifetime
         world.world_map[x_y_key].phosphorus -= self.DEATH_CONCENTRATION * 1/self.max_lifetime
         world.world_map[x_y_key].potassium -= self.DEATH_CONCENTRATION * 1/self.max_lifetime
-        if world.world_map[x_y_key].nitrogen <= self.DEATH_CONCENTRATION * 3 or \
-           world.world_map[x_y_key].phosphorus <= self.DEATH_CONCENTRATION * 1 or \
-           world.world_map[x_y_key].potassium <= self.DEATH_CONCENTRATION * 1:
+        if world.world_map[x_y_key].nitrogen < 0 or \
+           world.world_map[x_y_key].phosphorus < 0 or \
+           world.world_map[x_y_key].potassium < 0:
             self._die(world)
             return
-        if len(world.world_map[x_y_key].beings['grass']) > 12:
+        if len(world.world_map[x_y_key].beings['grass']) > 10:
             self._die(world)
             return
 
@@ -128,13 +128,13 @@ class GrassPlant(Plant):
         :param sandbox.simulate_world.World world: The world object
         """
         rand_bacteria = random.randint(0, 7)
-        if rand_bacteria in [0, 1, 6]:
+        if rand_bacteria in [0, 1, 2, 3]:
             world.global_bacteria.append(simulate_bacteria.NitrogenBacteria(
                 self.x_position, self.y_position))
-        elif rand_bacteria in [2, 3]:
+        elif rand_bacteria in [4, 5]:
             world.global_bacteria.append(simulate_bacteria.PhosphorusBacteria(
                 self.x_position, self.y_position))
-        elif rand_bacteria in [4, 5]:
+        elif rand_bacteria in [6, 7]:
             world.global_bacteria.append(simulate_bacteria.PotassiumBacteria(
                 self.x_position, self.y_position))
 
@@ -148,9 +148,9 @@ class TreePlant(Plant):
     DEATH_CONCENTRATION = 6
 
     def __init__(self, x_position, y_position):
-        super(TreePlant, self).__init__(max_lifetime=180, x_position=x_position,
+        super(TreePlant, self).__init__(max_lifetime=160, x_position=x_position,
                                         y_position=y_position,
-                                        reproduction_rate=20)
+                                        reproduction_rate=35)
 
     def __repr__(self):
         return '{}'.format(self.__class__.__name__)
@@ -184,15 +184,21 @@ class TreePlant(Plant):
         :param sandbox.simulate_world.World world: The world object
         """
         x_y_key = utils.get_x_y_key(self.x_position, self.y_position)
-        world.world_map[x_y_key].plant_matter -= self.DEATH_CONCENTRATION * 5/self.max_lifetime
-        world.world_map[x_y_key].carbon -= self.DEATH_CONCENTRATION * 4/self.max_lifetime
-        world.world_map[x_y_key].nitrogen -= self.DEATH_CONCENTRATION * 1/self.max_lifetime
+        # world.world_map[x_y_key].plant_matter -= self.DEATH_CONCENTRATION * 5/self.max_lifetime
+        world.world_map[x_y_key].carbon -= self.DEATH_CONCENTRATION * 5/self.max_lifetime
+        world.world_map[x_y_key].nitrogen -= self.DEATH_CONCENTRATION * 2/self.max_lifetime
         world.world_map[x_y_key].phosphorus -= self.DEATH_CONCENTRATION * 1/self.max_lifetime
         world.world_map[x_y_key].potassium -= self.DEATH_CONCENTRATION * 1/self.max_lifetime
-        if world.world_map[x_y_key].carbon <= self.DEATH_CONCENTRATION * 4 or \
-           world.world_map[x_y_key].nitrogen <= self.DEATH_CONCENTRATION * 1 or \
-           world.world_map[x_y_key].phosphorus <= self.DEATH_CONCENTRATION * 1 or \
-           world.world_map[x_y_key].potassium <= self.DEATH_CONCENTRATION * 1:
+        if world.world_map[x_y_key].carbon < 0 or \
+           world.world_map[x_y_key].nitrogen < 0 or \
+           world.world_map[x_y_key].phosphorus < 0 or \
+           world.world_map[x_y_key].potassium < 0:
+            # print('TREE DIED:: x: {} y: {}, carbon:{}, nitrogen:{}, '
+            #       'phosphorus:{}, potassium:{}'.format(self.x_position, self.y_position,
+            #                                            world.world_map[x_y_key].carbon,
+            #                                            world.world_map[x_y_key].nitrogen,
+            #                                            world.world_map[x_y_key].phosphorus,
+            #                                            world.world_map[x_y_key].potassium))
             self._die(world)
             return
         if len(world.world_map[x_y_key].beings['tree']) > 2:

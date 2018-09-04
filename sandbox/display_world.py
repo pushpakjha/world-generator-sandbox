@@ -38,6 +38,8 @@ def plot_bacteria(world):
             tree_matter += world.world_map[x_y_key].tree_matter
             grass += len(world.world_map[x_y_key].beings['grass'])
             trees += len(world.world_map[x_y_key].beings['tree'])
-    print('nitrogen:{} phosphorus:{} potassium:{} carbon:{} plant_matter:{} tree_matter:{}'
-          .format(nitrogen, phosphorus, potassium, carbon, plant_matter, tree_matter))
+    print('nitrogen:{} phosphorus:{} potassium:{} carbon:{}'
+          .format(nitrogen, phosphorus, potassium, carbon))
+    print('plant_matter:{} tree_matter:{}'
+          .format(plant_matter, tree_matter))
     print('grass: {} trees:{}'.format(grass, trees))

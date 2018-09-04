@@ -112,8 +112,8 @@ class SimulateWorld:
                 rand_x_pos = random.randint(0, self.world.max_x_size - 1)
                 rand_y_pos = random.randint(0, self.world.max_y_size - 1)
                 self.spawn_grass_plant(rand_x_pos, rand_y_pos)
-        if 200 < self.world.time < 215:
-            for _ in range(0, 5):
+        if 200 < self.world.time < 225:
+            for _ in range(0, 10):
                 rand_x_pos = random.randint(0, self.world.max_x_size - 1)
                 rand_y_pos = random.randint(0, self.world.max_y_size - 1)
                 self.spawn_tree(rand_x_pos, rand_y_pos)
@@ -161,16 +161,22 @@ class SimulateWorld:
         :param int y_position: The y position of their piece of land
         :rtype: tuple
         """
-        scale_factor = 1
         x_y_key = utils.get_x_y_key(x_position, y_position)
-        red_color = ((self.world.world_map[x_y_key].phosphorus +
-                      self.world.world_map[x_y_key].potassium +
-                      self.world.world_map[x_y_key].nitrogen) * scale_factor)
-        red_color -= len(self.world.world_map[x_y_key].beings['grass']) * 400
-        green_color = self.world.world_map[x_y_key].nitrogen * scale_factor
-        green_color += len(self.world.world_map[x_y_key].beings['grass']) * 45
-        blue_color = self.world.world_map[x_y_key].potassium * scale_factor
-        blue_color -= len(self.world.world_map[x_y_key].beings['grass']) * 60
+        red_color = (self.world.world_map[x_y_key].phosphorus +
+                     self.world.world_map[x_y_key].potassium +
+                     self.world.world_map[x_y_key].nitrogen)
+        green_color = self.world.world_map[x_y_key].nitrogen
+        blue_color = self.world.world_map[x_y_key].potassium
+
+        # red_color -= len(self.world.world_map[x_y_key].beings['grass']) * 400
+        # green_color += len(self.world.world_map[x_y_key].beings['grass']) * 45
+        # blue_color -= len(self.world.world_map[x_y_key].beings['grass']) * 60
+
+        if len(self.world.world_map[x_y_key].beings['grass']) >= 5:
+            red_color = 0
+            green_color = random.randint(180, 220)
+            blue_color = 0
+
         if len(self.world.world_map[x_y_key].beings['tree']) >= 2:
             red_color = 139
             green_color = 69
